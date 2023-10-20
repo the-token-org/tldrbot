@@ -34,7 +34,7 @@ def run():
 
 
 def run_newsletter():
-    papers = get_n_papers(5)
+    papers = get_n_papers(3)
     overview_summary = generate_overview(papers)
 
     tldr_strs = "\n\n".join([paper.to_markdown() for paper in papers])
