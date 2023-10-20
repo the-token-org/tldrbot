@@ -15,7 +15,7 @@ def get_n_papers(n: int) -> list[Paper]:
     res = feedparser.parse(url)
 
     papers: list[Paper] = []
-    for entry in res["entries"][0]:
+    for entry in res["entries"]:
         papers.append(
             Paper(
                 title=entry["title"],
