@@ -39,7 +39,7 @@ def run_newsletter(n: int = 3):
 
     tldr_strs = "\n\n".join([paper.to_markdown() for paper in papers])
     content = f"""Hello The Token.
-Today, {overview_summary}
+Today, we have papers about {overview_summary}
 
 {tldr_strs}"""
 
