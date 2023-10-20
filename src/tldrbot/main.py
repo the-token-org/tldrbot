@@ -37,10 +37,11 @@ def run_newsletter():
     papers = get_n_papers(5)
     overview_summary = generate_overview(papers)
 
+    tldr_strs = "\n\n".join([paper.to_markdown() for paper in papers])
     content = f"""Hello The Token.
 Today, {overview_summary}
 
-{'\n\n'.join([paper.to_markdown() for paper in papers])}"""
+{tldr_strs}"""
 
     post(URL, content)
 
