@@ -47,4 +47,5 @@ Today, {overview_summary}
 
 
 if __name__ == "__main__":
-    run()
+    # run()
+    run_newsletter()
