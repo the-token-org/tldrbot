@@ -33,8 +33,8 @@ def run():
     sienna.save(used_urls, str(USED_URLS_PATH))
 
 
-def run_newsletter():
-    papers = get_n_papers(3)
+def run_newsletter(n: int = 3):
+    papers = get_n_papers(n)
     overview_summary = generate_overview(papers)
 
     tldr_strs = "\n\n".join([paper.to_markdown() for paper in papers])
@@ -48,4 +48,4 @@ Today, {overview_summary}
 
 if __name__ == "__main__":
     # run()
-    run_newsletter()
+    run_newsletter(n=3)
