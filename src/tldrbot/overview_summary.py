@@ -15,7 +15,11 @@ def generate_overview(papers: list[Paper]) -> str:
         + "\nThere are papers that present"
     )
 
-    out = pipe(prompt, max_new_tokens=512)
+    out = pipe(
+        prompt,
+        max_new_tokens=512,
+        return_full_text=False,
+    )
     summary = out[0]["generated_text"]
     assert isinstance(summary, str)
     return summary
