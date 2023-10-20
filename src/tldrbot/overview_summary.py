@@ -7,6 +7,18 @@ PROMPT_TEMPLATE = "Generate an overview sentence of the following {num_document}
 
 
 def generate_overview(papers: list[Paper]) -> str:
+    """Given a list of papers, generate an overview summary in one sentence.
+
+    Parameters
+    ----------
+    papers : list[Paper]
+        A list of source papers
+
+    Returns
+    -------
+    str
+        An overview summary in one sentence
+    """
     pipe = pipeline("text-generation", model=MODEL, device_map="auto")
 
     prompt = (

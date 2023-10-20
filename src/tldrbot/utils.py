@@ -9,6 +9,18 @@ ARXIV_QUERY_URL = "http://export.arxiv.org/api/query?search_query=cat:cs.CL&max_
 
 
 def get_n_papers(n: int) -> list[Paper]:
+    """Get N papers via Arxiv API.
+
+    Parameters
+    ----------
+    n : int
+        Number of recent papers to fetch from API
+
+    Returns
+    -------
+    list[Paper]
+        A list of fetched papers
+    """
     summarizer = SchnitSum("sobamchan/bart-large-scitldr")
 
     url = ARXIV_QUERY_URL.format(n=n)
@@ -30,10 +42,26 @@ def get_n_papers(n: int) -> list[Paper]:
 
 
 def get_latest() -> Paper:
+    """Just get one latest paper
+
+    Returns
+    -------
+    Paper
+        The latest paper
+    """
     return get_n_papers(1)[0]
 
 
 def post(url: str, text: str):
+    """Post the given text to the Discord channel
+
+    Parameters
+    ----------
+    url : str
+        URL of the Discord channel, for Webhook
+    text : str
+        Text to be posted
+    """
     session = requests.Session()
     webhook = discord.webhook.SyncWebhook.from_url(url, session=session)
     webhook.send(text)

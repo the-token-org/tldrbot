@@ -1,4 +1,5 @@
 import os
+from argparse import ArgumentParser
 from pathlib import Path
 
 import sienna
@@ -47,5 +48,12 @@ Today, we have papers about {overview_summary}
 
 
 if __name__ == "__main__":
-    # run()
-    run_newsletter(n=3)
+    parser = ArgumentParser()
+    parser.add_argument("--do-news-letter", action="store_true")
+    parser.add_argument("--news-letter-paper-n", type=int, deefault=3)
+    args = parser.parse_args()
+
+    if args.do_news_letter:
+        run_newsletter(n=args.news_letter_paper_n)
+    else:
+        run()
