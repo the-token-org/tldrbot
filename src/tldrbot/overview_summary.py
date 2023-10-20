@@ -10,7 +10,7 @@ def generate_overview(papers: list[Paper]) -> str:
     pipe = pipeline("text-generation", model=MODEL, device_map="auto")
 
     prompt = (
-        PROMPT_TEMPLATE.format(len(papers))
+        PROMPT_TEMPLATE.format(num_document=len(papers))
         + "\n".join([f"Document {i}: {paper.tldr}" for i, paper in enumerate(papers)])
         + "\nThere are papers that present"
     )
