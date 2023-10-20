@@ -1,6 +1,6 @@
 from transformers import pipeline
 
-from src.tldrbot.main import Paper
+from src.tldrbot.paper import Paper
 
 MODEL = "meta-llama/Llama-2-7b-chat-hf"
 PROMPT_TEMPLATE = "Generate an overview sentence of the following {num_document} documents in one sentence.\n"
