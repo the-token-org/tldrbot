@@ -38,13 +38,13 @@ def run_newsletter(n: int = 3):
     papers = get_n_papers(n)
     overview_summary = generate_overview(papers)
 
-    tldr_strs = "\n\n".join([paper.to_markdown() for paper in papers])
     content = f"""Hello The Token.
-Today, we have papers about {overview_summary}
-
-{tldr_strs}"""
+Today, we have papers about {overview_summary}"""
 
     post(URL, content)
+
+    for paper in papers:
+        post(URL, paper.to_markdown())
 
 
 if __name__ == "__main__":
