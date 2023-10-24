@@ -19,7 +19,8 @@ if not USED_URLS_PATH.exists():
     USED_URLS_PATH.touch()
 
 
-def run():
+def run_single_tldr():
+    """Make a TLDR post"""
     used_urls = sienna.load(str(USED_URLS_PATH))
 
     paper = get_latest()
@@ -35,12 +36,19 @@ def run():
 
 
 def run_newsletter(n: int = 3):
+    """Make a newsletter looking post with N papers
+
+    Parameters
+    ----------
+    n : int
+        Number of papers to be included in the post
+    """
     papers = get_n_papers(n)
     overview_summary = generate_overview(papers)
+    overview_summary = overview_summary.rstrip()
 
     content = f"""Hello The Token.
 Today, we have papers about {overview_summary}"""
-
     post(URL, content)
 
     for paper in papers:
@@ -56,4 +64,4 @@ if __name__ == "__main__":
     if args.do_news_letter:
         run_newsletter(n=args.news_letter_paper_n)
     else:
-        run()
+        run_single_tldr()
