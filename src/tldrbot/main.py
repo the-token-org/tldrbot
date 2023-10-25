@@ -1,4 +1,5 @@
 import os
+from loguru import logger
 from argparse import ArgumentParser
 from pathlib import Path
 
@@ -13,6 +14,10 @@ URL = os.environ.get("URL")
 assert isinstance(URL, str)
 
 USED_URLS_PATH = Path("./used_urls_path.txt")
+
+if not os.path.exists("./logs"):
+    os.mkdir("./logs")
+logger.add("./logs/file_{time}.log")
 
 
 if not USED_URLS_PATH.exists():
@@ -35,6 +40,7 @@ def run_single_tldr():
     sienna.save(used_urls, str(USED_URLS_PATH))
 
 
+@logger.catch
 def run_newsletter(n: int = 3):
     """Make a newsletter looking post with N papers
 
