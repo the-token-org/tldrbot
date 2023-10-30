@@ -64,7 +64,7 @@ Today, we have papers about {overview_summary}"""
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("--do-news-letter", action="store_true")
-    parser.add_argument("--news-letter-paper-n", type=int, deefault=3)
+    parser.add_argument("--news-letter-paper-n", type=int, default=3)
     args = parser.parse_args()
 
     if args.do_news_letter:
