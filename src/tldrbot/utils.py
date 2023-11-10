@@ -1,20 +1,28 @@
+import os
+
 import discord
 import feedparser
 import requests
+from dotenv import load_dotenv
 from schnitsum import SchnitSum
 
 from src.tldrbot.paper import Paper
 
-ARXIV_QUERY_URL = "http://export.arxiv.org/api/query?search_query=cat:cs.CL&max_results={n}&sortBy=lastUpdatedDate&sortOrder=descending"
+load_dotenv()
+DEFAULT_ARXIV_QUERY = "http://export.arxiv.org/api/query?search_query=cat:cs.CL{keywords}&max_results={n}&sortBy=lastUpdatedDate&sortOrder=descending"
+ARXIV_QUERY_URL = os.environ.get("ARXIV_QUERY_URL", DEFAULT_ARXIV_QUERY)
+assert isinstance(ARXIV_QUERY_URL, str)
 
 
-def get_n_papers(n: int) -> list[Paper]:
+def get_n_papers(n: int, keywords: list[str] | None) -> list[Paper]:
     """Get N papers via Arxiv API.
 
     Parameters
     ----------
     n : int
         Number of recent papers to fetch from API
+    keywords : list[str] | None
+        Use to query Arxiv
 
     Returns
     -------
@@ -23,7 +31,13 @@ def get_n_papers(n: int) -> list[Paper]:
     """
     summarizer = SchnitSum("sobamchan/bart-large-scitldr")
 
-    url = ARXIV_QUERY_URL.format(n=n)
+    if keywords:
+        keywords = [f"ti:{kw}" for kw in keywords]
+        keywords_str = f"+AND+{'+OR+'.join(keywords)}"
+    else:
+        keywords_str = ""
+
+    url = ARXIV_QUERY_URL.format(n=n, keywords=keywords_str)
     res = feedparser.parse(url)
 
     papers: list[Paper] = []
@@ -41,7 +55,7 @@ def get_n_papers(n: int) -> list[Paper]:
     return papers
 
 
-def get_latest() -> Paper:
+def get_latest(keywords: list[str] | None) -> Paper:
     """Just get one latest paper
 
     Returns
@@ -49,7 +63,7 @@ def get_latest() -> Paper:
     Paper
         The latest paper
     """
-    return get_n_papers(1)[0]
+    return get_n_papers(1, keywords)[0]
 
 
 def post(url: str, text: str):

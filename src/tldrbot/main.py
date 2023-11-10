@@ -1,10 +1,10 @@
 import os
-from loguru import logger
 from argparse import ArgumentParser
 from pathlib import Path
 
 import sienna
 from dotenv import load_dotenv
+from loguru import logger
 
 from src.tldrbot.overview_summary import generate_overview
 from src.tldrbot.utils import get_latest, get_n_papers, post
@@ -24,11 +24,11 @@ if not USED_URLS_PATH.exists():
     USED_URLS_PATH.touch()
 
 
-def run_single_tldr():
+def run_single_tldr(keywords: list[str] | None):
     """Make a TLDR post"""
     used_urls = sienna.load(str(USED_URLS_PATH))
 
-    paper = get_latest()
+    paper = get_latest(keywords)
 
     if paper.url in used_urls:
         return
@@ -65,9 +65,10 @@ if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("--do-news-letter", action="store_true")
     parser.add_argument("--news-letter-paper-n", type=int, default=3)
+    parser.add_argument("--keywords", nargs="+", type=str, default=None)
     args = parser.parse_args()
 
     if args.do_news_letter:
         run_newsletter(n=args.news_letter_paper_n)
     else:
-        run_single_tldr()
+        run_single_tldr(args.keywords)
