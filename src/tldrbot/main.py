@@ -66,7 +66,11 @@ if __name__ == "__main__":
     parser.add_argument("--do-news-letter", action="store_true")
     parser.add_argument("--news-letter-paper-n", type=int, default=3)
     parser.add_argument("--keywords", nargs="+", type=str, default=None)
+    parser.add_argument("--discord-url", type=str, default=None)
     args = parser.parse_args()
+
+    if args.discord_url:
+        URL = args.discord_url
 
     if args.do_news_letter:
         run_newsletter(n=args.news_letter_paper_n)
