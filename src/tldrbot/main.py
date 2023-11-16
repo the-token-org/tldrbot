@@ -49,7 +49,7 @@ def run_newsletter(n: int = 3):
     n : int
         Number of papers to be included in the post
     """
-    papers = get_n_papers(n)
+    papers = get_n_papers(n, keywords=None)
     overview_summary = generate_overview(papers)
     overview_summary = overview_summary.rstrip()
 
