@@ -44,7 +44,7 @@ def get_n_papers(n: int, keywords: list[str] | None) -> list[Paper]:
     for entry in res["entries"]:
         papers.append(
             Paper(
-                title=entry["title"],
+                title=entry["title"].replace("\n", " "),
                 abstract=entry["summary"],
                 url=entry["link"],
                 authors=[author["name"] for author in entry["authors"]],
