@@ -1,47 +1,29 @@
-import os
 from argparse import ArgumentParser
 from pathlib import Path
 
 import sienna
-from dotenv import load_dotenv
-from loguru import logger
 
 from src.tldrbot.overview_summary import generate_overview
 from src.tldrbot.utils import get_latest, get_n_papers, post
 
-load_dotenv()
-URL = os.environ.get("URL")
-assert isinstance(URL, str)
 
-USED_URLS_PATH = Path("./used_urls_path.txt")
-
-if not os.path.exists("./logs"):
-    os.mkdir("./logs")
-logger.add("./logs/file_{time}.log")
-
-
-if not USED_URLS_PATH.exists():
-    USED_URLS_PATH.touch()
-
-
-def run_single_tldr(keywords: list[str] | None):
+def run_single_tldr(discord_url: str, used_url_fpath: Path, keywords: list[str] | None):
     """Make a TLDR post"""
-    used_urls = sienna.load(str(USED_URLS_PATH))
+    used_urls = sienna.load(str(used_url_fpath))
 
     paper = get_latest(keywords)
 
     if paper.url in used_urls:
         return
 
-    post(URL, paper.to_markdown())
+    post(discord_url, paper.to_markdown())
 
     assert isinstance(used_urls, list)
     used_urls.append(paper.url)
-    sienna.save(used_urls, str(USED_URLS_PATH))
+    sienna.save(used_urls, str(used_url_fpath))
 
 
-@logger.catch
-def run_newsletter(n: int = 3):
+def run_newsletter(discord_url: str, n: int = 3):
     """Make a newsletter looking post with N papers
 
     Parameters
@@ -55,24 +37,26 @@ def run_newsletter(n: int = 3):
 
     content = f"""Hello The Token.
 Today, we have papers about {overview_summary}"""
-    post(URL, content)
+    post(discord_url, content)
 
     for paper in papers:
-        post(URL, paper.to_markdown())
+        post(discord_url, paper.to_markdown())
 
 
 if __name__ == "__main__":
     parser = ArgumentParser()
+    parser.add_argument("--bot-name", type=str, required=True)
+    parser.add_argument("--discord-url", type=str, required=True)
     parser.add_argument("--do-news-letter", action="store_true")
     parser.add_argument("--news-letter-paper-n", type=int, default=3)
     parser.add_argument("--keywords", nargs="+", type=str, default=None)
-    parser.add_argument("--discord-url", type=str, default=None)
     args = parser.parse_args()
 
-    if args.discord_url:
-        URL = args.discord_url
+    used_url_fpath = Path(f"./used-urls.{args.bot_name}.txt")
+    if not used_url_fpath.exists():
+        used_url_fpath.touch()
 
     if args.do_news_letter:
-        run_newsletter(n=args.news_letter_paper_n)
+        run_newsletter(args.discord_url, n=args.news_letter_paper_n)
     else:
-        run_single_tldr(args.keywords)
+        run_single_tldr(args.discord_url, used_url_fpath, args.keywords)
