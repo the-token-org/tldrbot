@@ -1,6 +1,6 @@
 [project]
-name = ""
-version = ""
+name = "tldrbot"
+version = "0.1.0"
 description = ""
 authors = [
     {name = "sobamchan", email = "oh.sore.sore.soutarou@gmail.com"},
@@ -23,5 +23,9 @@ license = {text = "MIT"}
 dev = [
     "ipython>=8.16.1",
     "neovim>=0.3.1",
-    "pyright>=1.1.333",
+    "pyright>=1.1.335",
+    "black>=23.11.0",
+    "isort>=5.12.0",
+    "null>=0.6.1",
+    "ruff>=0.1.5",
 ]
