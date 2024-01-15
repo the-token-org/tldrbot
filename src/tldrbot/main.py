@@ -3,8 +3,8 @@ from pathlib import Path
 
 import sienna
 
-from src.tldrbot.overview_summary import generate_overview
-from src.tldrbot.utils import get_latest, get_n_papers, post
+from tldrbot.overview_summary import generate_overview
+from tldrbot.utils import get_latest, get_n_papers, post
 
 
 def run_single_tldr(discord_url: str, used_url_fpath: Path, keywords: list[str] | None):

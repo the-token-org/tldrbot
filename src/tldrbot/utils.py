@@ -6,7 +6,7 @@ import requests
 from dotenv import load_dotenv
 from schnitsum import SchnitSum
 
-from src.tldrbot.paper import Paper
+from tldrbot.paper import Paper
 
 load_dotenv()
 DEFAULT_ARXIV_QUERY = "http://export.arxiv.org/api/query?search_query=cat:cs.CL{keywords}&max_results={n}&sortBy=lastUpdatedDate&sortOrder=descending"
